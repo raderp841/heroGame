@@ -12,6 +12,8 @@ namespace HeroGame.DAL
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
         private const string SQL_SaveNewUser = "insert into userInfo values(@firstName, @lastName, @email, @password, null, 'false')";
+        private const string SQL_CheckEmail = "select count(*) from userInfo where email = @email";
+        private const string SQL_SelectUser = "select * from userInfo where email = @email";
 
         public bool SaveNewUser(UserInfoModel user)
         {
@@ -20,6 +22,16 @@ namespace HeroGame.DAL
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
+
+                    SqlCommand cmd2 = new SqlCommand(SQL_CheckEmail, conn);
+                    cmd2.Parameters.AddWithValue("@email", user.Email);
+                    int numberOfRows = (int)(cmd2.ExecuteScalar());
+
+                    if(numberOfRows > 0)
+                    {
+                        return false;
+                    }
+
                     SqlCommand cmd = new SqlCommand(SQL_SaveNewUser, conn);
                     cmd.Parameters.AddWithValue("@firstName", user.FirstName);
                     cmd.Parameters.AddWithValue("@lastName", user.LastName);

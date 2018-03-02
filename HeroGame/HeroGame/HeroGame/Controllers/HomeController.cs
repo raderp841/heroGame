@@ -27,6 +27,7 @@ namespace HeroGame.Controllers
             if (ModelState.IsValid)
             {
                 UserInfoDAL dal = new UserInfoDAL();
+
                 dal.SaveNewUser(newUser);
                 return View("Index");
             }
