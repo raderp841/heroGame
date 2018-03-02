@@ -23,14 +23,7 @@ namespace HeroGame.DAL
                 {
                     conn.Open();
 
-                    SqlCommand cmd2 = new SqlCommand(SQL_CheckEmail, conn);
-                    cmd2.Parameters.AddWithValue("@email", user.Email);
-                    int numberOfRows = (int)(cmd2.ExecuteScalar());
-
-                    if(numberOfRows > 0)
-                    {
-                        return false;
-                    }
+                    
 
                     SqlCommand cmd = new SqlCommand(SQL_SaveNewUser, conn);
                     cmd.Parameters.AddWithValue("@firstName", user.FirstName);
@@ -39,6 +32,35 @@ namespace HeroGame.DAL
                     cmd.Parameters.AddWithValue("@password", user.Password);
                     int rowsAffected = cmd.ExecuteNonQuery();
                     return (rowsAffected > 0);
+
+                }
+            }
+            catch(SqlException ex)
+            {
+                throw;
+            }
+        }
+
+        public bool CheckAvailability(string email)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd2 = new SqlCommand(SQL_CheckEmail, conn);
+                    cmd2.Parameters.AddWithValue("@email", email);
+                    int numberOfRows = (int)(cmd2.ExecuteScalar());
+
+                    if (numberOfRows > 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
 
                 }
             }

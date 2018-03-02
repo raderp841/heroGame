@@ -24,10 +24,17 @@ namespace HeroGame.Controllers
         [HttpPost]
         public ActionResult LoginRegister(UserInfoModel newUser)
         {
+            ViewBag.ErrorMessage = null;
+
             if (ModelState.IsValid)
             {
                 UserInfoDAL dal = new UserInfoDAL();
+                if (dal.CheckAvailability(newUser.Email) == false)
+                {
+                    ViewBag.ErrorMessage = "Email has already been taken";
+                    return View("LoginRegister");
 
+                }
                 dal.SaveNewUser(newUser);
                 return View("Index");
             }

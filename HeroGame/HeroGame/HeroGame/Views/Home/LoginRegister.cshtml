@@ -35,6 +35,12 @@
             <div>
                 @Html.ValidationMessageFor(m => m.Email)
             </div>
+            @if(ViewBag.ErrorMessage != null)
+            {
+                <div>
+                    @ViewBag.ErrorMessage;
+                </div>
+            }
         </div>
         <div class="">
             <div class="">
