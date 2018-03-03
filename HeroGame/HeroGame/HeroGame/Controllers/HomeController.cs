@@ -22,32 +22,50 @@ namespace HeroGame.Controllers
             return View("LoginRegister", model);
         }
         [HttpPost]
-        public ActionResult LoginRegister(UserInfoModel newUser)
+        public ActionResult LoginRegister(UserInfoModel newUser, int logCode)
         {
+            UserInfoDAL dal = new UserInfoDAL();
+
             ViewBag.ErrorMessage = null;
-
-            if (ModelState.IsValid)
+            if (logCode == 0)
             {
-                UserInfoDAL dal = new UserInfoDAL();
-                if (dal.CheckAvailability(newUser.Email) == false)
+                if (ModelState.IsValid)
                 {
-                    ViewBag.ErrorMessage = "Email has already been taken";
-                    return View("LoginRegister");
+                    if (dal.CheckAvailability(newUser.Email) == false)
+                    {
+                        ViewBag.ErrorMessage = "Email has already been taken";
+                        return View("LoginRegister");
 
+                    }
+                    dal.SaveNewUser(newUser);
+                    return View("Index");
                 }
-                dal.SaveNewUser(newUser);
-                return View("Index");
+                else
+                {
+                    return View("LoginRegister");
+                }
             }
-            else
+            if(logCode == 1)
             {
-                return View("LoginRegister");
-            }
-        }
-            public ActionResult Contact()
-            {
-                ViewBag.Message = "Your contact page.";
+                string providedPassword = newUser.Password;
+                UserInfoModel user = dal.SelectUser(newUser.Email);
 
-                return View();
+                if(user.Password == providedPassword)
+                {
+                    return View("Game", user);
+                }
+                else
+                {
+                    return View("LoginRegister");
+                }
             }
+            return View("LoginRegister");
+        }
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
         }
     }
+}

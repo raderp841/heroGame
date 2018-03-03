@@ -69,5 +69,41 @@ namespace HeroGame.DAL
                 throw;
             }
         }
+
+        public UserInfoModel SelectUser(string email)
+        {
+            UserInfoModel output = new UserInfoModel();
+
+            try
+            {
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_SelectUser, conn);
+                    cmd.Parameters.AddWithValue("@email", email);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        output.Id = Convert.ToInt32(reader["id"]);
+                        output.FirstName = Convert.ToString(reader["firstName"]);
+                        output.LastName = Convert.ToString(reader["lastName"]);
+                        output.Email = Convert.ToString(reader["email"]);
+                        output.Password = Convert.ToString(reader["password"]);
+                        output.IsAdmin = Convert.ToBoolean(reader["isAdmin"]);
+                    }
+
+                    
+                }
+            }
+            catch(SqlException ex)
+            {
+                throw;
+            }
+
+            return output;
+        }
     }
 }
