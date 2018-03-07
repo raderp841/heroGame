@@ -13,33 +13,27 @@ passwordSalt	varchar(max)null,
 isAdmin			bit			not null
 );
 
-create table inventory
-(
-id				int			primary key			identity(1,1),
-coins			int			not null
-);
+
 
 create table heroes
 (
 id				int			primary key			identity(1,1),
-isAlive			bit			not null,
 class			varchar(20) not null,
 lvl				int			not null,
-inventoryId		int			not null,
 health			int			not null,
 heroName		varchar(20) not null,
-
-constraint fk_heroes_inventory foreign key (inventoryId) references inventory(id),
-);
-
-create table userInfoHeroes
-(
-id				int			primary key			identity(1,1),
-heroesId		int			not null,
 userInfoId		int			not null,
 
-constraint fk_userInfoHeroes_heroes foreign key (heroesId) references heroes(id),
-constraint fk_userInfoHeroes_userInfo foreign key (userInfoId) references userInfo(id),
+constraint fk_heroes_userInfo foreign key (userInfoId) references userInfo(id),
+);
+
+create table inventory
+(
+id				int			primary key			identity(1,1),
+coins			int			not null, 
+heroesId		int			not null,
+
+constraint fk_inventory_heroes foreign key (heroesId) references heroes(id),
 );
 
 create table weapon

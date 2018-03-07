@@ -1,39 +1,5 @@
 ﻿@using HeroGame.Models;
-@model HeroModel
+@model UserInfo_HeroModel
 
 <br /><br />
 
-<div id="newCharacterForm">
-    <form class="form-horizontal " action="@Url.Action("CharacterView", "Home")" method="post">
-        <h1 class="text-center">Register</h1>
-
-        <div class="form-group text-center">
-
-            <div class="">
-                <div class="">
-                    @Html.TextBoxFor(m => m.HeroName, new { placeholder = "Hero Name" })
-                    <div>
-                        @Html.ValidationMessageFor(m => m.HeroName)
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="">
-                <div class="">
-                    <fieldset>
-                        <select id="Class" name="Class">
-                            <option value="Warrior">Warrior</option>
-                            <option value="Mage">Mage</option>
-                            <option value="Ranger">Ranger</option>
-                            <option value="Ninja">Ninja</option>
-                        </select>
-                    </fieldset>
-                </div>
-            </div>
-            <br />
-        </div>
-        <div class="text-center">
-            <button class="btn btn-lg btn-success">Sign Up!</button>
-        </div>
-    </form>
-</div>
