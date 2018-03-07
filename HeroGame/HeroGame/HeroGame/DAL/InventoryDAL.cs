@@ -22,5 +22,7 @@ namespace HeroGame.DAL
 
             return dalHelper.SqlForBool(injectionDictionary, SQL_CreateInventoryForHero, connectionString);
         }
+
+        
     }
 }

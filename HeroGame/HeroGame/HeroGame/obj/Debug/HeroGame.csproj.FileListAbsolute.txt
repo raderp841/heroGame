@@ -40,3 +40,6 @@ C:\Users\rader\OneDrive\Desktop\My Projects\heroGame\HeroGame\HeroGame\HeroGame\
 C:\Users\rader\OneDrive\Desktop\My Projects\heroGame\HeroGame\HeroGame\HeroGame\obj\Debug\HeroGame.csproj.CoreCompileInputs.cache
 C:\Users\rader\OneDrive\Desktop\My Projects\heroGame\HeroGame\HeroGame\HeroGame\obj\Debug\HeroGame.dll
 C:\Users\rader\OneDrive\Desktop\My Projects\heroGame\HeroGame\HeroGame\HeroGame\obj\Debug\HeroGame.pdb
+C:\Users\rader\OneDrive\Desktop\My Projects\heroGame\HeroGame\HeroGame\HeroGame\bin\Dapper.dll
+C:\Users\rader\OneDrive\Desktop\My Projects\heroGame\HeroGame\HeroGame\HeroGame\bin\Dapper.Extension.dll
+C:\Users\rader\OneDrive\Desktop\My Projects\heroGame\HeroGame\HeroGame\HeroGame\bin\Dapper.xml

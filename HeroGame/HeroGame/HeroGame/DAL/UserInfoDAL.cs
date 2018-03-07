@@ -81,38 +81,39 @@ namespace HeroGame.DAL
 
         public UserInfoModel SelectUser(string email)
         {
-            UserInfoModel output = new UserInfoModel();
+            
+            return (UserInfoModel)dalHelper.SelectSingle(SQL_SelectUser, connectionString, "email", email);
 
-            try
-            {
+            //try
+            //{
 
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
+            //    using (SqlConnection conn = new SqlConnection(connectionString))
+            //    {
+            //        conn.Open();
 
-                    SqlCommand cmd = new SqlCommand(SQL_SelectUser, conn);
-                    cmd.Parameters.AddWithValue("@email", email);
-                    SqlDataReader reader = cmd.ExecuteReader();
+            //        SqlCommand cmd = new SqlCommand(SQL_SelectUser, conn);
+            //        cmd.Parameters.AddWithValue("@email", email);
+            //        SqlDataReader reader = cmd.ExecuteReader();
 
-                    while (reader.Read())
-                    {
-                        output.Id = Convert.ToInt32(reader["id"]);
-                        output.FirstName = Convert.ToString(reader["firstName"]);
-                        output.LastName = Convert.ToString(reader["lastName"]);
-                        output.Email = Convert.ToString(reader["email"]);
-                        output.Password = Convert.ToString(reader["password"]);
-                        output.IsAdmin = Convert.ToBoolean(reader["isAdmin"]);
-                    }
+            //        while (reader.Read())
+            //        {
+            //            output.Id = Convert.ToInt32(reader["id"]);
+            //            output.FirstName = Convert.ToString(reader["firstName"]);
+            //            output.LastName = Convert.ToString(reader["lastName"]);
+            //            output.Email = Convert.ToString(reader["email"]);
+            //            output.Password = Convert.ToString(reader["password"]);
+            //            output.IsAdmin = Convert.ToBoolean(reader["isAdmin"]);
+            //        }
 
                     
-                }
-            }
-            catch(SqlException ex)
-            {
-                throw;
-            }
+            //    }
+            //}
+            //catch(SqlException ex)
+            //{
+            //    throw;
+            //}
 
-            return output;
+            //return output;
         }
     }
 }
