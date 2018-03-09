@@ -32,31 +32,10 @@ namespace HeroGame.DAL
 
         public bool CheckAvailability(string email)
         {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
+            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
+            injectionDictionary.Add("@email", email);
 
-                    SqlCommand cmd2 = new SqlCommand(SQL_CheckEmail, conn);
-                    cmd2.Parameters.AddWithValue("@email", email);
-                    int numberOfRows = (int)(cmd2.ExecuteScalar());
-
-                    if (numberOfRows > 0)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-
-                }
-            }
-            catch(SqlException ex)
-            {
-                throw;
-            }
+            return dalHelper.SqlForBool(injectionDictionary, SQL_CheckEmail, connectionString);
         }
 
         public UserInfoModel SelectUser(string email)

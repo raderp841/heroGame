@@ -12,8 +12,11 @@ namespace HeroGame.DAL
     public class HeroDAL
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
-        private const string SQL_CreateHero = "Insert into hero values(@class, 1, 100, @heroName, @userInfoId)";
+        private const string SQL_CreateHero = "Insert into heroes values(@class, 1, 100, @heroName, @userInfoId)";
         private const string SQL_GetAllHeroes = "Select * from heroes where userInfoId = @userInfoId";
+        private const string SQL_UpdateHero = "Update heroes set @column = @value where id = @id";
+        private const string SQL_DeleteHero = "Delete from heroes where id = @id";
+        private const string SQL_GetSingleHero = "Select * from heroes where id = @id";
         DalHelpers dalHelper = new DalHelpers();
         public bool CreateHero( HeroModel hero, int userInfoId)
         {
@@ -22,43 +25,34 @@ namespace HeroGame.DAL
             injectionDictionary.Add("@heroName", hero.HeroName);
             injectionDictionary.Add("@userInfoId", userInfoId);
 
-
-           return dalHelper.SqlForBool(injectionDictionary, SQL_CreateHero, connectionString);
-            
+           return dalHelper.SqlForBool(injectionDictionary, SQL_CreateHero, connectionString);         
         }
         public List<HeroModel> GetAllHeroesForUser(int userInfoId)
         {
-            List<HeroModel> heroes = new List<HeroModel>();
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
+            return dalHelper.SelectList<HeroModel>(SQL_GetAllHeroes, connectionString, "userInfoId", userInfoId);
+        }
 
-                    SqlCommand cmd = new SqlCommand(SQL_GetAllHeroes, conn);
-                    cmd.Parameters.AddWithValue("@userInfoId", userInfoId);
-                    SqlDataReader reader = cmd.ExecuteReader();
+        public bool UpdateHero(string column, object value, int id)
+        {
+            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
+            injectionDictionary.Add("@column", column);
+            injectionDictionary.Add("@value", value);
+            injectionDictionary.Add("@id", id);
 
-                    while (reader.Read())
-                    {
-                        HeroModel hero = new HeroModel();
-                        hero.Class = Convert.ToString(reader["class"]);
-                        hero.Health = Convert.ToInt32(reader["health"]);
-                        hero.HeroName = Convert.ToString(reader["heroName"]);
-                        hero.Id = Convert.ToInt32(reader["id"]);
-                        hero.InventoryId = Convert.ToInt32(reader["inventoryId"]);
-                        hero.Lvl = Convert.ToInt32(reader["lvl"]);
-                        hero.UserInfoId = Convert.ToInt32(reader["userInfoId"]);
+            return dalHelper.SqlForBool(injectionDictionary, SQL_UpdateHero, connectionString);
+        }
 
-                        heroes.Add(hero);
-                    }
-                }
-            }
-            catch(SqlException ex)
-            {
-                throw;
-            }
-            return heroes;
+        public bool DeleteHero(int id)
+        {
+            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
+            injectionDictionary.Add("@id", id);
+
+            return dalHelper.SqlForBool(injectionDictionary, SQL_DeleteHero, connectionString);
+        }
+
+        public HeroModel GetSingleHero(int id)
+        {
+            return dalHelper.SelectSingle<HeroModel>(SQL_GetSingleHero, connectionString, "@id", id);
         }
     }
 }
