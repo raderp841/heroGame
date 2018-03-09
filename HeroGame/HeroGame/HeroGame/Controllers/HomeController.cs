@@ -78,5 +78,13 @@ namespace HeroGame.Controllers
 
             return View();
         }
+
+        public ActionResult AllUsers()
+        {
+            UserInfoDAL dal = new UserInfoDAL();
+            List<UserInfoModel> model = dal.SelectAllUsers();
+
+            return View("AllUsers", model);
+        }
     }
 }

@@ -34,43 +34,8 @@ namespace HeroGame.Helpers
                 throw;
             }
         }
-        public object SelectingSingleObject(Dictionary<string, object> injectionDictionary, string sqlQuery, string connectionString, object returnType)
-        {
-            object output = returnType;
-
-            PropertyInfo[] propertyInformation = returnType.GetType().GetProperties();
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand(sqlQuery, conn);
-                    foreach (var kvp in injectionDictionary)
-                    {
-                        cmd.Parameters.AddWithValue(kvp.Key, kvp.Value);
-                    }
-
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        for (int i = 0; i < propertyInformation.Length; i++)
-                        {
-                            // output.propertyInformation[i] =  ------------------------CANT FIGURE OUT THIS PART
-                        }
-                    }
-                    return output;
-                }
-
-            }
-            catch (SqlException ex)
-            {
-                throw;
-            }
-            return output;
-        }
         
-        public object SelectSingle(string sqlQuerey, string connectionString, string conditionColumn, object conditionValue )
+        public dynamic SelectSingle<T>(string sqlQuerey, string connectionString, string conditionColumn, object conditionValue )
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add(conditionColumn, conditionValue);
@@ -79,9 +44,37 @@ namespace HeroGame.Helpers
                 using (IDbConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    var output = conn.QuerySingle<UserInfoModel>(sqlQuerey, dictionary);
+                    var output = conn.QuerySingle<T>(sqlQuerey, dictionary);
                     return output;
                 }
+            }
+            catch(SqlException ex)
+            {
+                throw;
+            }
+        }
+
+        public dynamic SelectList<T>(string sqlQuerey, string connectionString, string conditionColumn = null, object conditionValue = null)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+
+            if (conditionColumn != null || conditionValue != null)
+            { 
+            dictionary.Add(conditionColumn, conditionValue);
+            }
+            try
+            {
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    using (var multi = conn.QueryMultiple(sqlQuerey, dictionary))
+                    {
+                        var invoiceItems = multi.Read<T>();
+                        return invoiceItems;
+                    }                  
+                }
+            
             }
             catch(SqlException ex)
             {

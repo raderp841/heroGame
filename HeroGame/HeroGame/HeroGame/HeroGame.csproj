@@ -200,6 +200,7 @@
     <Content Include="Views\Home\LoginRegister.cshtml" />
     <Content Include="Views\Home\Game.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\AllUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
