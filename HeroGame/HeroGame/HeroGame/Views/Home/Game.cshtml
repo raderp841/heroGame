@@ -1,6 +1,43 @@
 ﻿@using HeroGame.Models;
 @model UserInfo_HeroModel
+@{
+    List<HeroModel> heroes = Model.UsersHeroes;
+    UserInfoModel user = Model.UsersInfo;
+}
+
 
 <br /><br />
+      <div id="heroList">
+          @if (heroes.Count > 0)
+    {
+      <ul class="list-group">
+          @for (int i = 0; i < heroes.Count; i++)
+    {
+      <li class="list-group-item">
+          <h1>@heroes[i].HeroName</h1>
+      </li>
+      <br />
+}
+      </ul>
+}
+      </div>
 
-      <p>@Model.UsersInfo.FirstName</p>
+<button id="newHero" class="btn btn-block btn-group-lg">Create a New Hero</button>
+
+<div id="heroForm">
+    <form class="form-horizontal" action="@Url.Action("Game", "Home", new { userId = Model.UsersInfo.Id })" method="post">
+        <h1 class="text-center">New Hero</h1>
+        <div class="form-group text-center">
+            <div>
+                Hero Name:<br />
+                <input type="text" name="heroName" /><br /><br />
+                Class: <br />
+                <select name="className">
+                    <option value="warrior">Warrior</option>
+                    <option value="mage">Mage</option>
+                    <option value="ranger">Ranger</option>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>

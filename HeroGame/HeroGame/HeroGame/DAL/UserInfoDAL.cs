@@ -16,6 +16,8 @@ namespace HeroGame.DAL
         private const string SQL_CheckEmail = "select count(*) from userInfo where email = @email";
         private const string SQL_SelectUser = "select * from userInfo where email = @email";
         private const string SQL_SelectAllUsers = "select * from userInfo";
+        private const string SQL_UpdateUser = "update userInfo set @column = @value where id = @id";
+        private const string SQL_DeleteUser = "delete from userInfo where id = @id";
 
         DalHelpers dalHelper = new DalHelpers();
 
@@ -32,12 +34,24 @@ namespace HeroGame.DAL
 
         public bool CheckAvailability(string email)
         {
-            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
-            injectionDictionary.Add("@email", email);
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
 
-            return dalHelper.SqlForBool(injectionDictionary, SQL_CheckEmail, connectionString);
+                    SqlCommand cmd = new SqlCommand(SQL_CheckEmail, conn);
+                    cmd.Parameters.AddWithValue("@email", email);
+                    int numberOfRows = (int)(cmd.ExecuteScalar());
+
+                    return (numberOfRows == 0);
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw;
+            }
         }
-
         public UserInfoModel SelectUser(string email)
         {            
             return dalHelper.SelectSingle<UserInfoModel>(SQL_SelectUser, connectionString, "email", email);         
@@ -46,6 +60,24 @@ namespace HeroGame.DAL
         public List<UserInfoModel> SelectAllUsers()
         {
             return dalHelper.SelectList<UserInfoModel>(SQL_SelectAllUsers, connectionString);
+        }
+
+        public bool UpdateUser(int id, string column, object value)
+        {
+            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
+            injectionDictionary.Add("@id", id);
+            injectionDictionary.Add("@column", column);
+            injectionDictionary.Add("@value", value);
+
+            return dalHelper.SqlForBool(injectionDictionary, SQL_UpdateUser, connectionString);
+        }
+
+        public bool DeleteUser(int id)
+        {
+            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
+            injectionDictionary.Add("@id", id);
+
+            return dalHelper.SqlForBool(injectionDictionary, SQL_DeleteUser, connectionString);
         }
     }
 }

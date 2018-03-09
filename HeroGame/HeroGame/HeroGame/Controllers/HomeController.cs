@@ -17,9 +17,16 @@ namespace HeroGame.Controllers
 
         public ActionResult LoginRegister()
         {
-
+            if(Session["User"] != null)
+            {
+                Session["User"] = null;
+               return RedirectToAction("Index");
+            }
+            else
+            { 
             UserInfoModel model = new UserInfoModel();
             return View("LoginRegister", model);
+            }
         }
         [HttpPost]
         public ActionResult LoginRegister(UserInfoModel newUser, int logCode)
@@ -45,7 +52,7 @@ namespace HeroGame.Controllers
                     modelUser = userDal.SelectUser(newUser.Email);
                     model.UsersInfo = modelUser;
                     modelHeroes = heroDal.GetAllHeroesForUser(modelUser.Id);
-
+                    Session["User"] = modelUser;
                     return View("Game", model);
                 }
                 else
@@ -62,7 +69,7 @@ namespace HeroGame.Controllers
                 {
                     model.UsersInfo = userDal.SelectUser(newUser.Email);
                     model.UsersHeroes = heroDal.GetAllHeroesForUser(model.UsersInfo.Id);
-
+                    Session["User"] = model.UsersInfo;
                     return View("Game", model);
                 }
                 else
@@ -76,6 +83,12 @@ namespace HeroGame.Controllers
         {
             ViewBag.Message = "Your contact page.";
 
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Game(string className, string heroName, int userId)
+        {
             return View();
         }
 

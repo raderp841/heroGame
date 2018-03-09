@@ -157,6 +157,7 @@
     </Compile>
     <Compile Include="Helpers\DalHelpers.cs" />
     <Compile Include="Models\HeroModel.cs" />
+    <Compile Include="Models\InventoryModel.cs" />
     <Compile Include="Models\UserInfo-HeroModel.cs" />
     <Compile Include="Models\UserInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
