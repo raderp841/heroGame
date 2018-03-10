@@ -3,6 +3,7 @@
 @{
     Dictionary<HeroModel, InventoryModel> heroes = Model.UsersHeroes;
     UserInfoModel user = Model.UsersInfo;
+    int counter = 0;
 }
 
 
@@ -13,11 +14,24 @@
         <ul class="list-group">
             @foreach (var kvp in heroes)
             {
-                <li class="list-group-item">
-                    <h1>@kvp.Key.HeroName</h1>
-                    <p>@kvp.Value.Coins</p>
+                var hero = kvp.Key;
+                var inventory = kvp.Value;
+                string heroId = "heroList" + counter.ToString();
+                string inventoryId = "inventoryList" + counter.ToString();
+
+                <li id=@heroId class="heroClass list-group-item">
+                    <h1>@hero.HeroName</h1>
+                    <p>Level @hero.Lvl @hero.Class</p>
+                    <p>Health @hero.Health</p>
+                    <button id="viewInventoryButton" class="btn btn-block viewInventoryButton">View Inventory</button>
                 </li>
-                <br />
+                <li id="@inventoryId" class="inventoryClass list-group-item">
+                    <h1>Inventory for @hero.HeroName</h1>
+                    <p>Coin Balance: @inventory.Coins</p>
+                    <button class="viewHeroButton btn btn-block">View Hero</button>
+                </li>
+                
+                counter++;
             }
         </ul>
     }
