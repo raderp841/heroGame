@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using HeroGame.Models;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Reflection;
@@ -35,16 +34,15 @@ namespace HeroGame.Helpers
             }
         }
         
-        public dynamic SelectSingle<T>(string sqlQuerey, string connectionString, string conditionColumn, object conditionValue )
+        public dynamic SelectSingle<T>(string sqlQuerey, string connectionString, Dictionary<string,object> injectionDictionary)
         {
-            Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            dictionary.Add(conditionColumn, conditionValue);
+            
             try
             {
                 using (IDbConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    var output = conn.QuerySingle<T>(sqlQuerey, dictionary);
+                    var output = conn.QuerySingle<T>(sqlQuerey, injectionDictionary);
                     return output;
                 }
             }
@@ -77,6 +75,25 @@ namespace HeroGame.Helpers
             
             }
             catch(SqlException ex)
+            {
+                throw;
+            }
+        }
+
+        public bool CheckIfAvailable(string sqlQuery, string connectionString, Dictionary<string,object> injectionDictionary)
+        {
+            try
+            {
+                using (IDbConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    int output = conn.ExecuteScalar<int>(sqlQuery, injectionDictionary);
+
+                    return (output == 0);
+                }
+            }
+            catch (SqlException)
             {
                 throw;
             }

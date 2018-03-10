@@ -14,7 +14,8 @@ namespace HeroGame.DAL
         private string connectionString = ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
         private const string SQL_SaveNewUser = "insert into userInfo values(@firstName, @lastName, @email, @password, null, 'false')";
         private const string SQL_CheckEmail = "select count(*) from userInfo where email = @email";
-        private const string SQL_SelectUser = "select * from userInfo where email = @email";
+        private const string SQL_SelectUserByEmail = "select * from userInfo where email = @email";
+        private const string SQL_SelectUserById = "select * from userInfo where id = @id";
         private const string SQL_SelectAllUsers = "select * from userInfo";
         private const string SQL_UpdateUser = "update userInfo set @column = @value where id = @id";
         private const string SQL_DeleteUser = "delete from userInfo where id = @id";
@@ -34,32 +35,47 @@ namespace HeroGame.DAL
 
         public bool CheckAvailability(string email)
         {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
+            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
+            injectionDictionary.Add("@email", email);
 
-                    SqlCommand cmd = new SqlCommand(SQL_CheckEmail, conn);
-                    cmd.Parameters.AddWithValue("@email", email);
-                    int numberOfRows = (int)(cmd.ExecuteScalar());
+            return dalHelper.CheckIfAvailable(SQL_CheckEmail, connectionString, injectionDictionary);
+            //try
+            //{
+            //    using (SqlConnection conn = new SqlConnection(connectionString))
+            //    {
+            //        conn.Open();
 
-                    return (numberOfRows == 0);
-                }
-            }
-            catch (SqlException ex)
-            {
-                throw;
-            }
+            //        SqlCommand cmd = new SqlCommand(SQL_CheckEmail, conn);
+            //        cmd.Parameters.AddWithValue("@email", email);
+            //        int numberOfRows = (int)(cmd.ExecuteScalar());
+
+            //        return (numberOfRows == 0);
+            //    }
+            //}
+            //catch (SqlException ex)
+            //{
+            //    throw;
+            //}
         }
-        public UserInfoModel SelectUser(string email)
-        {            
-            return dalHelper.SelectSingle<UserInfoModel>(SQL_SelectUser, connectionString, "email", email);         
+        public UserInfoModel SelectUserByEmail(string email)
+        {
+            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
+            injectionDictionary.Add("email", email);
+
+            return dalHelper.SelectSingle<UserInfoModel>(SQL_SelectUserByEmail, connectionString, injectionDictionary);         
         }
 
         public List<UserInfoModel> SelectAllUsers()
         {
             return dalHelper.SelectList<UserInfoModel>(SQL_SelectAllUsers, connectionString);
+        }
+
+        public UserInfoModel SelectUserById(int id)
+        {
+            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
+            injectionDictionary.Add("id", id);
+
+            return dalHelper.SelectSingle<UserInfoModel>(SQL_SelectUserById, connectionString, injectionDictionary);
         }
 
         public bool UpdateUser(int id, string column, object value)

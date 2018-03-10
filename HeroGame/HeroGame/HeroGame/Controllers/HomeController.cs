@@ -5,11 +5,14 @@ using System.Web;
 using System.Web.Mvc;
 using HeroGame.DAL;
 using HeroGame.Models;
+using HeroGame.Classes;
 
 namespace HeroGame.Controllers
 {
     public class HomeController : Controller
     {
+        ControllerMethods controllerMethods = new ControllerMethods();
+
         public ActionResult Index()
         {
             return View();
@@ -17,15 +20,17 @@ namespace HeroGame.Controllers
 
         public ActionResult LoginRegister()
         {
-            if(Session["User"] != null)
+            if (Session["User"] != null)
             {
                 Session["User"] = null;
-               return RedirectToAction("Index");
+
+                return RedirectToAction("Index");
             }
             else
-            { 
-            UserInfoModel model = new UserInfoModel();
-            return View("LoginRegister", model);
+            {
+                UserInfoModel model = new UserInfoModel();
+
+                return View("LoginRegister", model);
             }
         }
         [HttpPost]
@@ -45,14 +50,17 @@ namespace HeroGame.Controllers
                     if (userDal.CheckAvailability(newUser.Email) == false)
                     {
                         ViewBag.ErrorMessage = "Email has already been taken";
+
                         return View("LoginRegister");
 
                     }
                     userDal.SaveNewUser(newUser);
-                    modelUser = userDal.SelectUser(newUser.Email);
+                    modelUser = userDal.SelectUserByEmail(newUser.Email);
                     model.UsersInfo = modelUser;
                     modelHeroes = heroDal.GetAllHeroesForUser(modelUser.Id);
+                    model.UsersHeroes = controllerMethods.CreateHeroInventoryDictionary(modelHeroes);
                     Session["User"] = modelUser;
+
                     return View("Game", model);
                 }
                 else
@@ -60,16 +68,18 @@ namespace HeroGame.Controllers
                     return View("LoginRegister");
                 }
             }
-            if(logCode == 1)
+            if (logCode == 1)
             {
                 string providedPassword = newUser.Password;
-                UserInfoModel user = userDal.SelectUser(newUser.Email);
+                UserInfoModel user = userDal.SelectUserByEmail(newUser.Email);
 
-                if(user.Password == providedPassword)
+                if (user.Password == providedPassword)
                 {
-                    model.UsersInfo = userDal.SelectUser(newUser.Email);
-                    model.UsersHeroes = heroDal.GetAllHeroesForUser(model.UsersInfo.Id);
+                    model.UsersInfo = userDal.SelectUserByEmail(newUser.Email);
+                    modelHeroes = heroDal.GetAllHeroesForUser(model.UsersInfo.Id);
+                    model.UsersHeroes = controllerMethods.CreateHeroInventoryDictionary(modelHeroes);
                     Session["User"] = model.UsersInfo;
+
                     return View("Game", model);
                 }
                 else
@@ -79,17 +89,31 @@ namespace HeroGame.Controllers
             }
             return View("LoginRegister");
         }
-        public ActionResult Contact()
+        public ActionResult Game()
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            if (Session["User"] != null)
+            {
+                UserInfoModel user = (UserInfoModel)Session["User"];
+                UserInfo_HeroModel model = controllerMethods.GetModelforGame(user.Id);
+                return View("Game", model);
+            }
+            return RedirectToAction("LoginRegister");
         }
 
         [HttpPost]
         public ActionResult Game(string className, string heroName, int userId)
         {
-            return View();
+            HeroDAL heroDal = new HeroDAL();
+            UserInfo_HeroModel model = new UserInfo_HeroModel();
+
+            if (heroDal.CheckHeroAvailability(userId, heroName))
+            {
+                model = controllerMethods.GetModelforGame(userId, className, heroName);
+                return View("Game", model);
+            }
+            model = controllerMethods.GetModelforGame(userId);
+
+            return View("Game", model);
         }
 
         public ActionResult AllUsers()

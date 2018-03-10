@@ -17,6 +17,8 @@ namespace HeroGame.DAL
         private const string SQL_UpdateHero = "Update heroes set @column = @value where id = @id";
         private const string SQL_DeleteHero = "Delete from heroes where id = @id";
         private const string SQL_GetSingleHero = "Select * from heroes where id = @id";
+        private const string SQL_CheckHeroName = "select count(*) from heroes where userInfoId = @userInfoId and heroName = @heroName";
+        private const string SQL_GetHeroByName = "select * from heroes where userInfoId = @userInfoId and heroName = @heroName";
         DalHelpers dalHelper = new DalHelpers();
         public bool CreateHero( HeroModel hero, int userInfoId)
         {
@@ -50,9 +52,30 @@ namespace HeroGame.DAL
             return dalHelper.SqlForBool(injectionDictionary, SQL_DeleteHero, connectionString);
         }
 
-        public HeroModel GetSingleHero(int id)
+        public HeroModel GetSingleHeroById(int id)
         {
-            return dalHelper.SelectSingle<HeroModel>(SQL_GetSingleHero, connectionString, "@id", id);
+            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
+            injectionDictionary.Add("id", id);
+
+            return dalHelper.SelectSingle<HeroModel>(SQL_GetSingleHero, connectionString, injectionDictionary);
+        }
+
+        public HeroModel GetHeroByIdName(int userInfoId, string heroName)
+        {
+            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
+            injectionDictionary.Add("userInfoId", userInfoId);
+            injectionDictionary.Add("heroName", heroName);
+
+            return dalHelper.SelectSingle<HeroModel>(SQL_GetHeroByName, connectionString, injectionDictionary);
+        }
+
+        public bool CheckHeroAvailability(int userInfoId, string heroName)
+        {
+            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
+            injectionDictionary.Add("@userInfoId", userInfoId);
+            injectionDictionary.Add("@heroName", heroName);
+
+            return dalHelper.CheckIfAvailable(SQL_CheckHeroName, connectionString, injectionDictionary);   
         }
     }
 }

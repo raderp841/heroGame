@@ -1,26 +1,27 @@
 ﻿@using HeroGame.Models;
 @model UserInfo_HeroModel
 @{
-    List<HeroModel> heroes = Model.UsersHeroes;
+    Dictionary<HeroModel, InventoryModel> heroes = Model.UsersHeroes;
     UserInfoModel user = Model.UsersInfo;
 }
 
 
 <br /><br />
-      <div id="heroList">
-          @if (heroes.Count > 0)
+<div id="heroList">
+    @if (heroes.Count > 0)
     {
-      <ul class="list-group">
-          @for (int i = 0; i < heroes.Count; i++)
-    {
-      <li class="list-group-item">
-          <h1>@heroes[i].HeroName</h1>
-      </li>
-      <br />
-}
-      </ul>
-}
-      </div>
+        <ul class="list-group">
+            @foreach (var kvp in heroes)
+            {
+                <li class="list-group-item">
+                    <h1>@kvp.Key.HeroName</h1>
+                    <p>@kvp.Value.Coins</p>
+                </li>
+                <br />
+            }
+        </ul>
+    }
+</div>
 
 <button id="newHero" class="btn btn-block btn-group-lg">Create a New Hero</button>
 
@@ -39,5 +40,6 @@
                 </select>
             </div>
         </div>
+        <button type="submit">Create Hero</button>
     </form>
 </div>

@@ -9,7 +9,7 @@ namespace HeroGame.Models
 {
     public class UserInfo_HeroModel
     {
-        public List<HeroModel> UsersHeroes { get; set; }
+        public Dictionary<HeroModel, InventoryModel> UsersHeroes { get; set; }
         public UserInfoModel UsersInfo { get; set; }
     }
 }

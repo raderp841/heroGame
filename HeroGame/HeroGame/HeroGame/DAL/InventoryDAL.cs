@@ -16,6 +16,7 @@ namespace HeroGame.DAL
         private const string SQL_GetInventoryForHero = "select * from inventory where id = @id";
         private const string SQL_DeleteInventoryForHero = "delete from inventory where id = @id";
         private const string SQL_UpdateInventoryForHero = "update inventory set @column = @value where = @id";
+        private const string SQL_GetInventoryByHeroId = "select * from inventory where heroesId = @heroesId";
         DalHelpers dalHelper = new DalHelpers();
 
         public bool CreateInventory(int heroId)
@@ -27,7 +28,17 @@ namespace HeroGame.DAL
         }
         public InventoryModel GetInventory(int id)
         {
-            return dalHelper.SelectSingle<InventoryModel>(SQL_GetInventoryForHero, connectionString, "id", id);
+            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
+            injectionDictionary.Add("id", id);
+
+            return dalHelper.SelectSingle<InventoryModel>(SQL_GetInventoryForHero, connectionString, injectionDictionary);
+        }
+        public InventoryModel GetInventoryByHeroId(int heroesId)
+        {
+            Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
+            injectionDictionary.Add("heroesId", heroesId);
+
+            return dalHelper.SelectSingle<InventoryModel>(SQL_GetInventoryByHeroId, connectionString, injectionDictionary);
         }
 
         public bool DeleteInventory(int id)
