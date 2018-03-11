@@ -20,17 +20,31 @@
                 string inventoryId = "inventoryList" + counter.ToString();
 
                 <li id=@heroId class="heroClass list-group-item">
-                    <h1>@hero.HeroName</h1>
-                    <p>Level @hero.Lvl @hero.Class</p>
-                    <p>Health @hero.Health</p>
-                    <button id="viewInventoryButton" class="btn btn-block viewInventoryButton">View Inventory</button>
+                    <div id="heroParent">
+                        <div id="heroWide">
+                            <h1>@hero.HeroName</h1>
+                            <p>Level @hero.Lvl @hero.Class</p>
+                            <p>Health @hero.Health</p>
+
+                            <button id="viewInventoryButton" class="btn btn-block viewInventoryButton">View Inventory</button>
+                        </div>
+                        <div id="heroNarrow">
+                            <div class="hamburger-menu">
+                                <div class="bar1"></div>
+                                <div class="bar2"></div>
+                                <div class="bar3"></div>
+                                <br />
+                                <a href="@Url.Action("DeleteHero", "Home", new { id = hero.Id })"><div id="deleteHero">Delete</div></a>
+                                <a><div id="updateHero"></div></a>
+                            </div>
+                        </div>
+                    </div>
                 </li>
                 <li id="@inventoryId" class="inventoryClass list-group-item">
                     <h1>Inventory for @hero.HeroName</h1>
                     <p>Coin Balance: @inventory.Coins</p>
                     <button class="viewHeroButton btn btn-block">View Hero</button>
                 </li>
-                
                 counter++;
             }
         </ul>

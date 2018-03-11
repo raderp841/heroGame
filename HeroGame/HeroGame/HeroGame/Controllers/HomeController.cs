@@ -123,5 +123,22 @@ namespace HeroGame.Controllers
 
             return View("AllUsers", model);
         }
+
+        public ActionResult DeleteHero(int id = -1)
+        {
+            if(id == -1)
+            {
+            }
+            else
+            {
+                HeroDAL heroDAL = new HeroDAL();
+                InventoryDAL inventoryDAL = new InventoryDAL();
+                HeroModel hero = heroDAL.GetSingleHeroById(id);
+                InventoryModel inventory = inventoryDAL.GetInventoryByHeroId(id);
+                inventoryDAL.DeleteInventory(inventory.Id);
+                heroDAL.DeleteHero(id);
+            }
+            return RedirectToAction("Game");
+        }
     }
 }
