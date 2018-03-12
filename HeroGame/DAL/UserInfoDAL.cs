@@ -9,7 +9,7 @@ using HeroGame.Helpers;
 
 namespace HeroGame.DAL
 {
-    public class UserInfoDAL
+    public class UserInfoDAL : IUserInfoDAL
     {
         private const string SQL_SaveNewUser = "insert into userInfo values(@firstName, @lastName, @email, @password, null, 'false')";
         private const string SQL_CheckEmail = "select count(*) from userInfo where email = @email";

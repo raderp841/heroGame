@@ -13,7 +13,18 @@ namespace HeroGame.Controllers
     public class HomeController : Controller
     {
         ControllerMethods controllerMethods = new ControllerMethods();
-        readonly string connectionString = ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
+        private readonly IUserInfoDAL userDal;
+        private readonly IHeroDAL heroDal;
+        private readonly IInventoryDAL inventoryDal;
+
+
+        public HomeController(IUserInfoDAL userDal, IHeroDAL heroDal, IInventoryDAL inventoryDal)
+        {
+            this.userDal = userDal;
+            this.heroDal = heroDal;
+            this.inventoryDal = inventoryDal;
+        }
+
 
         public ActionResult Index()
         {
@@ -37,9 +48,7 @@ namespace HeroGame.Controllers
         }
         [HttpPost]
         public ActionResult LoginRegister(UserInfoModel newUser, int logCode)
-        {
-            UserInfoDAL userDal = new UserInfoDAL(connectionString);
-            HeroDAL heroDal = new HeroDAL(connectionString);
+        {            
             UserInfoModel modelUser = new UserInfoModel();
             UserInfo_HeroModel model = new UserInfo_HeroModel();
             List<HeroModel> modelHeroes = new List<HeroModel>();
@@ -104,8 +113,7 @@ namespace HeroGame.Controllers
 
         [HttpPost]
         public ActionResult Game(string className, string heroName, int userId)
-        {
-            HeroDAL heroDal = new HeroDAL(connectionString);
+        {            
             UserInfo_HeroModel model = new UserInfo_HeroModel();
 
             if (heroDal.CheckHeroAvailability(userId, heroName))
@@ -119,9 +127,8 @@ namespace HeroGame.Controllers
         }
 
         public ActionResult AllUsers()
-        {
-            UserInfoDAL dal = new UserInfoDAL(connectionString);
-            List<UserInfoModel> model = dal.SelectAllUsers();
+        {            
+            List<UserInfoModel> model = userDal.SelectAllUsers();
 
             return View("AllUsers", model);
         }
@@ -132,13 +139,11 @@ namespace HeroGame.Controllers
             {
             }
             else
-            {
-                HeroDAL heroDAL = new HeroDAL(connectionString);
-                InventoryDAL inventoryDAL = new InventoryDAL(connectionString);
-                HeroModel hero = heroDAL.GetSingleHeroById(id);
-                InventoryModel inventory = inventoryDAL.GetInventoryByHeroId(id);
-                inventoryDAL.DeleteInventory(inventory.Id);
-                heroDAL.DeleteHero(id);
+            {                                
+                HeroModel hero = heroDal.GetSingleHeroById(id);
+                InventoryModel inventory = inventoryDal.GetInventoryByHeroId(id);
+                inventoryDal.DeleteInventory(inventory.Id);
+                heroDal.DeleteHero(id);
             }
             return RedirectToAction("Game");
         }

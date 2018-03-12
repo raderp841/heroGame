@@ -9,7 +9,7 @@ using HeroGame.Helpers;
 
 namespace HeroGame.DAL
 {
-    public class InventoryDAL
+    public class InventoryDAL : IInventoryDAL
     {
 
         private const string SQL_CreateInventoryForHero = "insert into inventory values (0, @heroId)";

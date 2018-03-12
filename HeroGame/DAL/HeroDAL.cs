@@ -9,7 +9,7 @@ using HeroGame.Helpers;
 
 namespace HeroGame.DAL
 {
-    public class HeroDAL
+    public class HeroDAL : IHeroDAL
     {
         private const string SQL_CreateHero = "Insert into heroes values(@class, 1, 100, @heroName, @userInfoId)";
         private const string SQL_GetAllHeroes = "Select * from heroes where userInfoId = @userInfoId";
