@@ -10,9 +10,15 @@ using Dapper;
 
 namespace HeroGame.Helpers
 {
-    public class DalHelpers
+    public class DalHelper
     {
-        public bool SqlForBool(Dictionary<string, object> injectionDictionary, string sqlQuery, string connectionString)
+        readonly string connectionString;
+        public DalHelper(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
+
+        public bool SqlForBool(Dictionary<string, object> injectionDictionary, string sqlQuery)
         {
             try
             {
@@ -27,16 +33,16 @@ namespace HeroGame.Helpers
                     }
                     return (cmd.ExecuteNonQuery() > 0);
                 }
-            }         
-            catch(SqlException ex)
+            }
+            catch (SqlException ex)
             {
                 throw;
             }
         }
-        
-        public dynamic SelectSingle<T>(string sqlQuerey, string connectionString, Dictionary<string,object> injectionDictionary)
+
+        public T SelectSingle<T>(string sqlQuerey, Dictionary<string, object> injectionDictionary)
         {
-            
+
             try
             {
                 using (IDbConnection conn = new SqlConnection(connectionString))
@@ -46,20 +52,21 @@ namespace HeroGame.Helpers
                     return output;
                 }
             }
-            catch(SqlException ex)
+            catch (SqlException ex)
             {
                 throw;
             }
         }
 
-        public dynamic SelectList<T>(string sqlQuerey, string connectionString, string conditionColumn = null, object conditionValue = null)
+        public dynamic SelectList<T>(string sqlQuerey, string conditionColumn = null, object conditionValue = null)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
             if (conditionColumn != null || conditionValue != null)
-            { 
-            dictionary.Add(conditionColumn, conditionValue);
+            {
+                dictionary.Add(conditionColumn, conditionValue);
             }
+
             try
             {
                 using (IDbConnection conn = new SqlConnection(connectionString))
@@ -70,17 +77,17 @@ namespace HeroGame.Helpers
                     {
                         var invoiceItems = multi.Read<T>();
                         return invoiceItems;
-                    }                  
+                    }
                 }
-            
+
             }
-            catch(SqlException ex)
+            catch (SqlException ex)
             {
                 throw;
             }
         }
 
-        public bool CheckIfAvailable(string sqlQuery, string connectionString, Dictionary<string,object> injectionDictionary)
+        public int GetCount(string sqlQuery, Dictionary<string, object> injectionDictionary)
         {
             try
             {
@@ -90,7 +97,7 @@ namespace HeroGame.Helpers
 
                     int output = conn.ExecuteScalar<int>(sqlQuery, injectionDictionary);
 
-                    return (output == 0);
+                    return output;
                 }
             }
             catch (SqlException)
@@ -99,5 +106,4 @@ namespace HeroGame.Helpers
             }
         }
     }
-    
 }

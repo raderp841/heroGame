@@ -4,14 +4,17 @@ using System.Linq;
 using System.Web;
 using HeroGame.Models;
 using HeroGame.DAL;
+using System.Configuration;
 
 namespace HeroGame.Classes
 {
     public class ControllerMethods
     {
+        readonly string connectionString = ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
+
         public Dictionary<HeroModel, InventoryModel> CreateHeroInventoryDictionary(List<HeroModel> heroes)
         {
-            InventoryDAL inventoryDAL = new InventoryDAL();
+            InventoryDAL inventoryDAL = new InventoryDAL(connectionString);
             Dictionary<HeroModel, InventoryModel> output = new Dictionary<HeroModel, InventoryModel>();
             HeroModel hero = new HeroModel();
             InventoryModel inventory = new InventoryModel();
@@ -30,9 +33,9 @@ namespace HeroGame.Classes
         {
             
             ControllerMethods controllerMethods = new ControllerMethods();
-            HeroDAL heroDal = new HeroDAL();
-            InventoryDAL inventoryDAL = new InventoryDAL();
-            UserInfoDAL userInfoDAL = new UserInfoDAL();
+            HeroDAL heroDal = new HeroDAL(connectionString);
+            InventoryDAL inventoryDAL = new InventoryDAL(connectionString);
+            UserInfoDAL userInfoDAL = new UserInfoDAL(connectionString);
             HeroModel heroModel = new HeroModel();
             InventoryModel inventoryModel = new InventoryModel();
             UserInfo_HeroModel model = new UserInfo_HeroModel();

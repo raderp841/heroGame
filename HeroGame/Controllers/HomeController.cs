@@ -6,12 +6,14 @@ using System.Web.Mvc;
 using HeroGame.DAL;
 using HeroGame.Models;
 using HeroGame.Classes;
+using System.Configuration;
 
 namespace HeroGame.Controllers
 {
     public class HomeController : Controller
     {
         ControllerMethods controllerMethods = new ControllerMethods();
+        readonly string connectionString = ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
 
         public ActionResult Index()
         {
@@ -36,8 +38,8 @@ namespace HeroGame.Controllers
         [HttpPost]
         public ActionResult LoginRegister(UserInfoModel newUser, int logCode)
         {
-            UserInfoDAL userDal = new UserInfoDAL();
-            HeroDAL heroDal = new HeroDAL();
+            UserInfoDAL userDal = new UserInfoDAL(connectionString);
+            HeroDAL heroDal = new HeroDAL(connectionString);
             UserInfoModel modelUser = new UserInfoModel();
             UserInfo_HeroModel model = new UserInfo_HeroModel();
             List<HeroModel> modelHeroes = new List<HeroModel>();
@@ -103,7 +105,7 @@ namespace HeroGame.Controllers
         [HttpPost]
         public ActionResult Game(string className, string heroName, int userId)
         {
-            HeroDAL heroDal = new HeroDAL();
+            HeroDAL heroDal = new HeroDAL(connectionString);
             UserInfo_HeroModel model = new UserInfo_HeroModel();
 
             if (heroDal.CheckHeroAvailability(userId, heroName))
@@ -118,7 +120,7 @@ namespace HeroGame.Controllers
 
         public ActionResult AllUsers()
         {
-            UserInfoDAL dal = new UserInfoDAL();
+            UserInfoDAL dal = new UserInfoDAL(connectionString);
             List<UserInfoModel> model = dal.SelectAllUsers();
 
             return View("AllUsers", model);
@@ -131,8 +133,8 @@ namespace HeroGame.Controllers
             }
             else
             {
-                HeroDAL heroDAL = new HeroDAL();
-                InventoryDAL inventoryDAL = new InventoryDAL();
+                HeroDAL heroDAL = new HeroDAL(connectionString);
+                InventoryDAL inventoryDAL = new InventoryDAL(connectionString);
                 HeroModel hero = heroDAL.GetSingleHeroById(id);
                 InventoryModel inventory = inventoryDAL.GetInventoryByHeroId(id);
                 inventoryDAL.DeleteInventory(inventory.Id);
