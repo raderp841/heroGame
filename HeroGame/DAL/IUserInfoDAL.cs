@@ -12,7 +12,7 @@ namespace HeroGame.DAL
         bool SaveNewUser(UserInfoModel user);
         bool CheckAvailability(string email);
         UserInfoModel SelectUserByEmail(string email);
-        List<UserInfoModel> SelectAllUsers();
+        IList<UserInfoModel> SelectAllUsers();
         UserInfoModel SelectUserById(int id);
         bool UpdateUser(int id, string column, object value);
         bool DeleteUser(int id);

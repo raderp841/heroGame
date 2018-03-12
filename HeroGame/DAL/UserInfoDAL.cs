@@ -56,7 +56,7 @@ namespace HeroGame.DAL
             return dalHelper.SelectSingle<UserInfoModel>(SQL_SelectUserByEmail, injectionDictionary);         
         }
 
-        public List<UserInfoModel> SelectAllUsers()
+        public IList<UserInfoModel> SelectAllUsers()
         {
             return dalHelper.SelectList<UserInfoModel>(SQL_SelectAllUsers);
         }

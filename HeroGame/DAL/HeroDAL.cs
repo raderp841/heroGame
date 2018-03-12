@@ -34,7 +34,7 @@ namespace HeroGame.DAL
 
             return dalHelper.SqlForBool(injectionDictionary, SQL_CreateHero);
         }
-        public List<HeroModel> GetAllHeroesForUser(int userInfoId)
+        public IList<HeroModel> GetAllHeroesForUser(int userInfoId)
         {
             return dalHelper.SelectList<HeroModel>(SQL_GetAllHeroes, "userInfoId", userInfoId);
         }

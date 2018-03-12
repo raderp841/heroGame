@@ -51,7 +51,7 @@ namespace HeroGame.Controllers
         {            
             UserInfoModel modelUser = new UserInfoModel();
             UserInfo_HeroModel model = new UserInfo_HeroModel();
-            List<HeroModel> modelHeroes = new List<HeroModel>();
+            IList<HeroModel> modelHeroes = new List<HeroModel>();
 
             ViewBag.ErrorMessage = null;
             if (logCode == 0)
@@ -128,7 +128,7 @@ namespace HeroGame.Controllers
 
         public ActionResult AllUsers()
         {            
-            List<UserInfoModel> model = userDal.SelectAllUsers();
+            IList<UserInfoModel> model = userDal.SelectAllUsers();
 
             return View("AllUsers", model);
         }

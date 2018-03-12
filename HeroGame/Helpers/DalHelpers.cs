@@ -18,14 +18,14 @@ namespace HeroGame.Helpers
             this.connectionString = connectionString;
         }
 
-        public bool SqlForBool(Dictionary<string, object> injectionDictionary, string sqlQuery)
+        public bool SqlForBool(Dictionary<string, object> injectionDictionary, string sql)
         {
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand(sqlQuery, conn);
+                    SqlCommand cmd = new SqlCommand(sql, conn);
 
                     foreach (var kvp in injectionDictionary)
                     {
@@ -40,7 +40,7 @@ namespace HeroGame.Helpers
             }
         }
 
-        public T SelectSingle<T>(string sqlQuerey, Dictionary<string, object> injectionDictionary)
+        public T SelectSingle<T>(string sql, Dictionary<string, object> injectionDictionary)
         {
 
             try
@@ -48,7 +48,7 @@ namespace HeroGame.Helpers
                 using (IDbConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    var output = conn.QuerySingle<T>(sqlQuerey, injectionDictionary);
+                    var output = conn.QuerySingle<T>(sql, injectionDictionary);
                     return output;
                 }
             }
@@ -58,7 +58,12 @@ namespace HeroGame.Helpers
             }
         }
 
-        public dynamic SelectList<T>(string sqlQuerey, string conditionColumn = null, object conditionValue = null)
+        public IList<T>  SelectList<T>(string sql)
+        {
+            return SelectList<T>(sql, null, null);
+        }
+
+        public IList<T> SelectList<T>(string sql, string conditionColumn = null, object conditionValue = null)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
@@ -73,10 +78,9 @@ namespace HeroGame.Helpers
                 {
                     conn.Open();
 
-                    using (var multi = conn.QueryMultiple(sqlQuerey, dictionary))
+                    using (var multi = conn.QueryMultiple(sql, dictionary))
                     {
-                        var invoiceItems = multi.Read<T>();
-                        return invoiceItems;
+                        return multi.Read<T>().ToList<T>();                        
                     }
                 }
 
@@ -87,7 +91,7 @@ namespace HeroGame.Helpers
             }
         }
 
-        public int GetCount(string sqlQuery, Dictionary<string, object> injectionDictionary)
+        public int GetCount(string sql, Dictionary<string, object> injectionDictionary)
         {
             try
             {
@@ -95,7 +99,7 @@ namespace HeroGame.Helpers
                 {
                     conn.Open();
 
-                    int output = conn.ExecuteScalar<int>(sqlQuery, injectionDictionary);
+                    int output = conn.ExecuteScalar<int>(sql, injectionDictionary);
 
                     return output;
                 }

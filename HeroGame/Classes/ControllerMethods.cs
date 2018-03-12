@@ -12,7 +12,7 @@ namespace HeroGame.Classes
     {
         readonly string connectionString = ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
 
-        public Dictionary<HeroModel, InventoryModel> CreateHeroInventoryDictionary(List<HeroModel> heroes)
+        public Dictionary<HeroModel, InventoryModel> CreateHeroInventoryDictionary(IList<HeroModel> heroes)
         {
             InventoryDAL inventoryDAL = new InventoryDAL(connectionString);
             Dictionary<HeroModel, InventoryModel> output = new Dictionary<HeroModel, InventoryModel>();
@@ -40,7 +40,7 @@ namespace HeroGame.Classes
             InventoryModel inventoryModel = new InventoryModel();
             UserInfo_HeroModel model = new UserInfo_HeroModel();
             UserInfoModel userInfoModel = new UserInfoModel();
-            List<HeroModel> list = new List<HeroModel>();
+            IList<HeroModel> list = new List<HeroModel>();
             Dictionary<HeroModel, InventoryModel> dictionary = new Dictionary<HeroModel, InventoryModel>();
 
             if (heroName != null && className != null)
