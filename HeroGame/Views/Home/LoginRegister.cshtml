@@ -75,11 +75,15 @@
         <h1 class="text-center">Login</h1>
         <div class="form-group text-center">
             <div class="">
+                @if (ViewBag.LoginError != null)
+                {
+                    <div class="alert alert-danger">
+                        @ViewBag.LoginError
+                    </div>
+                    <br />
+                }
                 <div class="">
                     @Html.TextBoxFor(m => m.Email, new { placeholder = "Email" })
-                </div>
-                <div>
-                    @Html.ValidationMessageFor(m => m.Email)
                 </div>
             </div>
             <br />
@@ -87,9 +91,7 @@
                 <div class="">
                     @Html.PasswordFor(m => m.Password, new { placeholder = "Password" })
                 </div>
-                <div>
-                    @Html.ValidationMessageFor(m => m.Password)
-                </div>
+
             </div>
         </div>
         <div class="text-center">

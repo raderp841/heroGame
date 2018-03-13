@@ -48,7 +48,7 @@ namespace HeroGame.Controllers
         }
         [HttpPost]
         public ActionResult LoginRegister(UserInfoModel newUser, int logCode)
-        {            
+        {
             UserInfoModel modelUser = new UserInfoModel();
             UserInfo_HeroModel model = new UserInfo_HeroModel();
             IList<HeroModel> modelHeroes = new List<HeroModel>();
@@ -65,6 +65,9 @@ namespace HeroGame.Controllers
                         return View("LoginRegister");
 
                     }
+
+                    ViewBag.ErrorMessage = null;
+                    ViewBag.LoginError = null;
                     userDal.SaveNewUser(newUser);
                     modelUser = userDal.SelectUserByEmail(newUser.Email);
                     model.UsersInfo = modelUser;
@@ -82,20 +85,26 @@ namespace HeroGame.Controllers
             if (logCode == 1)
             {
                 string providedPassword = newUser.Password;
-                UserInfoModel user = userDal.SelectUserByEmail(newUser.Email);
 
-                if (user.Password == providedPassword)
+                if (userDal.CheckAvailability(newUser.Email) == false)
                 {
-                    model.UsersInfo = userDal.SelectUserByEmail(newUser.Email);
-                    modelHeroes = heroDal.GetAllHeroesForUser(model.UsersInfo.Id);
-                    model.UsersHeroes = controllerMethods.CreateHeroInventoryDictionary(modelHeroes);
-                    Session["User"] = model.UsersInfo;
+                    UserInfoModel user = userDal.SelectUserByEmail(newUser.Email);
 
-                    return View("Game", model);
+                    if (user.Password == providedPassword)
+                    {
+                        ViewBag.LoginError = null;
+                        ViewBag.ErrorMessage = null;
+                        model.UsersInfo = userDal.SelectUserByEmail(newUser.Email);
+                        modelHeroes = heroDal.GetAllHeroesForUser(model.UsersInfo.Id);
+                        model.UsersHeroes = controllerMethods.CreateHeroInventoryDictionary(modelHeroes);
+                        Session["User"] = model.UsersInfo;
+
+                        return View("Game", model);
+                    }
                 }
                 else
                 {
-                    return View("LoginRegister");
+                    ViewBag.LoginError = "Login or password was incorrect.";
                 }
             }
             return View("LoginRegister");
@@ -113,7 +122,7 @@ namespace HeroGame.Controllers
 
         [HttpPost]
         public ActionResult Game(string className, string heroName, int userId)
-        {            
+        {
             UserInfo_HeroModel model = new UserInfo_HeroModel();
 
             if (heroDal.CheckHeroAvailability(userId, heroName))
@@ -127,7 +136,7 @@ namespace HeroGame.Controllers
         }
 
         public ActionResult AllUsers()
-        {            
+        {
             IList<UserInfoModel> model = userDal.SelectAllUsers();
 
             return View("AllUsers", model);
@@ -135,11 +144,11 @@ namespace HeroGame.Controllers
 
         public ActionResult DeleteHero(int id = -1)
         {
-            if(id == -1)
+            if (id == -1)
             {
             }
             else
-            {                                
+            {
                 HeroModel hero = heroDal.GetSingleHeroById(id);
                 InventoryModel inventory = inventoryDal.GetInventoryByHeroId(id);
                 inventoryDal.DeleteInventory(inventory.Id);

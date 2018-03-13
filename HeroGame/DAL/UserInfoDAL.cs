@@ -48,6 +48,7 @@ namespace HeroGame.DAL
             return numberOfRows == 0;
             
         }
+
         public UserInfoModel SelectUserByEmail(string email)
         {
             Dictionary<string, object> injectionDictionary = new Dictionary<string, object>();
