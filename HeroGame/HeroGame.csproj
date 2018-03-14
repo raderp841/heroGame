@@ -185,6 +185,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="JS\Game.js" />
     <Content Include="JS\HeroCreateJS.js" />
     <Content Include="JS\LoginRegisterJS.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -218,6 +219,7 @@
     <Content Include="Views\Home\Game.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\AllUsers.cshtml" />
+    <Content Include="Views\Home\InGame.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
