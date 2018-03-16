@@ -156,5 +156,10 @@ namespace HeroGame.Controllers
             }
             return RedirectToAction("Game");
         }
+
+        public ActionResult InGame()
+        {
+            return View("InGame");
+        }
     }
 }
