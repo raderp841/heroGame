@@ -58,8 +58,10 @@ TopDownGame.Game.prototype = {
 
   //find objects in a Tiled layer that containt a property called "type" equal to a certain value
   findObjectsByType: function(type, map, layer) {
-    var result = new Array();
-    map.objects[layer].forEach(function(element){
+      var result = new Array();
+      console.log(map.objects[layer]);
+    map.objects[layer].forEach(function (element) {
+        console.log(element);
       if(element.properties.type === type) {
         //Phaser uses top left, Tiled bottom left so we have to adjust
         //also keep in mind that the cup images are a bit smaller than the tile which is 16x16
@@ -115,6 +117,7 @@ TopDownGame.Game.prototype = {
   },
   enterDoor: function(player, door) {
     console.log('entering door that will take you to '+door.targetTilemap+' on x:'+door.targetX+' and y:'+door.targetY);
+    
     
   },
 };
