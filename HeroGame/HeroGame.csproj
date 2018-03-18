@@ -185,19 +185,20 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="JS\Component.js" />
-    <Content Include="JS\HeroCreateJS.js" />
-    <Content Include="JS\InGame.js" />
-    <Content Include="JS\LoginRegisterJS.js" />
+    <Content Include="js\Boot.js" />
+    <Content Include="js\Game.js" />
+    <Content Include="js\HeroCreateJS.js" />
+    <Content Include="js\LoginRegisterJS.js" />
     <Content Include="Content\sprite.png" />
-    <Content Include="JS\Scenes.js" />
+    <Content Include="js\main.js" />
+    <Content Include="js\phaser.min.js" />
+    <Content Include="js\Preload.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\crafty.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
