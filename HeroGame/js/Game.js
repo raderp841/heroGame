@@ -4,8 +4,11 @@ var TopDownGame = TopDownGame || {};
 TopDownGame.Game = function(){};
 
 TopDownGame.Game.prototype = {
-  create: function() {
-    this.map = this.game.add.tilemap('level1');
+    create: function () {
+
+    if (this.map == null) {
+       this.map = this.game.add.tilemap('level1');
+    }
 
     //the first parameter is the tileset name as specified in Tiled, the second is the key to the asset
     this.map.addTilesetImage('tiles', 'gameTiles');
@@ -59,9 +62,7 @@ TopDownGame.Game.prototype = {
   //find objects in a Tiled layer that containt a property called "type" equal to a certain value
   findObjectsByType: function(type, map, layer) {
       var result = new Array();
-      console.log(map.objects[layer]);
     map.objects[layer].forEach(function (element) {
-        console.log(element);
       if(element.properties.type === type) {
         //Phaser uses top left, Tiled bottom left so we have to adjust
         //also keep in mind that the cup images are a bit smaller than the tile which is 16x16
@@ -116,8 +117,15 @@ TopDownGame.Game.prototype = {
     collectable.destroy();
   },
   enterDoor: function(player, door) {
-    console.log('entering door that will take you to '+door.targetTilemap+' on x:'+door.targetX+' and y:'+door.targetY);
-    
+      console.log('entering door that will take you to ' + door.targetTilemap + ' on x:' + door.targetX + ' and y:' + door.targetY);
+    //Going from level to level---------------------------------------LOOK AT LATER(working but crapy)
+      if (this.map.key == 'level1') {
+          this.map = this.game.add.tilemap('level2');
+      }
+      else if (this.map.key == 'level2') {
+          this.map = this.game.add.tilemap('level1');
+      }
+    this.state.restart();
     
   },
 };
