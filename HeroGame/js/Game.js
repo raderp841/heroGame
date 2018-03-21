@@ -118,13 +118,7 @@ TopDownGame.Game.prototype = {
   enterDoor: function(player, door) {
       console.log('entering door that will take you to ' + door.targetTilemap + ' on x:' + door.targetX + ' and y:' + door.targetY);
     //Going from level to level---------------------------------------LOOK AT LATER(working but crappy)
-      if (this.map.key == 'level1') {
-          this.map = this.game.add.tilemap('level2');
-      }
-      else if (this.map.key == 'level2') {
-          this.map = this.game.add.tilemap('level1');
-      }
+    this.map = this.game.add.tilemap(door.targetTilemap);
     this.state.restart();
-    
   },
 };
