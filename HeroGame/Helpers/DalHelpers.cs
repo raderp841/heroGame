@@ -58,7 +58,7 @@ namespace HeroGame.Helpers
             }
         }
 
-        public IList<T>  SelectList<T>(string sql)
+        public IList<T> SelectList<T>(string sql)
         {
             return SelectList<T>(sql, null, null);
         }

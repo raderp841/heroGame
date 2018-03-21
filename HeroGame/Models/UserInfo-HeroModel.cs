@@ -8,8 +8,8 @@ using System.ComponentModel.DataAnnotations;
 namespace HeroGame.Models
 {
     public class UserInfo_HeroModel
-    {
-        public Dictionary<HeroModel, InventoryModel> UsersHeroes { get; set; }
-        public UserInfoModel UsersInfo { get; set; }
+    {        
+        public UserInfoModel User { get; set; }
+        public IList<HeroModel> Heroes { get; set; } = new List<HeroModel>();
     }
 }

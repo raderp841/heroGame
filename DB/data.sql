@@ -20,46 +20,32 @@ values('Diamond', 150, 500);
 -- Creating Weapons
 
 insert into weapon
-values('Wooden Sword', 5, 'false', 10);
+values('Wooden Sword', 5, 10);
 
 insert into weapon
-values('Steel Sword', 10, 'false', 40);
+values('Steel Sword', 10, 40);
 
 insert into weapon
-values('Diamond Sword', 40, 'false', 500);
+values('Diamond Sword', 40, 500);
 
 insert into weapon
-values('Short Bow', 3, 'true', 10);
+values('Short Bow', 3, 10);
 
 insert into weapon
-values('Long Bow', 7, 'true', 40);
+values('Long Bow', 7, 40);
 
 insert into weapon
-values('Rifle', 15, 'true', 200);
+values('Rifle', 15,  200);
 
 insert into weapon
-values('Brass Knuckles', 7, 'false', 20);
+values('Brass Knuckles', 7, 20);
 
 insert into weapon
-values('Pointy Stick', 5, 'false', 10);
+values('Pointy Stick', 5, 10);
 
 insert into weapon
-values('Spear', 12, 'false', 70);
+values('Spear', 12,  70);
 
---Creating inventories for NPCs
 
-insert into inventory
-values(500);
-
-insert into inventory
-values(500);
-
---Creating NPCs
-
-insert into npc
-values('Gary', 'true', 1);
-
-insert into npc
-values('Nana', 'true', 2);
 
 

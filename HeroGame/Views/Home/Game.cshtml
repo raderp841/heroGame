@@ -1,32 +1,26 @@
 ﻿@using HeroGame.Models;
 @model UserInfo_HeroModel
-@{
-    Dictionary<HeroModel, InventoryModel> heroes = Model.UsersHeroes;
-    UserInfoModel user = Model.UsersInfo;
+@{    
     int counter = 0;
 }
 
 
 <br /><br />
 <div id="heroList">
-    @if (heroes.Count > 0)
+    @if (Model.Heroes.Count > 0)
     {
         <ul class="list-group">
-            @foreach (var kvp in heroes)
-            {
-                var hero = kvp.Key;
-                var inventory = kvp.Value;
-                string heroId = "heroList" + counter.ToString();
-                string inventoryId = "inventoryList" + counter.ToString();
+            @foreach (var hero in Model.Heroes)
+            {                
+                string heroId = "heroList" + counter.ToString();             
 
                 <li id=@heroId class="heroClass list-group-item">
                     <div id="heroParent">
                         <div id="heroWide">
                             <h1>@hero.HeroName</h1>
-                            <p>Level @hero.Lvl @hero.Class</p>
-                            <p>Health @hero.Health</p>
-
-                            <button id="viewInventoryButton" class="btn btn-block viewInventoryButton">View Inventory</button>
+                            <p>Class @hero.Class</p>
+                            <p>Health @hero.Health</p>                            
+                            <p>Coin Balance: @hero.Coins</p>
                         </div>
                         <div id="heroNarrow">
                             <div class="hamburger-menu">
@@ -39,12 +33,7 @@
                             </div>
                         </div>
                     </div>
-                </li>
-                <li id="@inventoryId" class="inventoryClass list-group-item">
-                    <h1>Inventory for @hero.HeroName</h1>
-                    <p>Coin Balance: @inventory.Coins</p>
-                    <button class="viewHeroButton btn btn-block">View Hero</button>
-                </li>
+                </li>                
                 counter++;
             }
         </ul>
@@ -54,7 +43,7 @@
 <button id="newHero" class="btn btn-block btn-group-lg">Create a New Hero</button>
 
 <div id="heroForm">
-    <form class="form-horizontal" action="@Url.Action("Game", "Home", new { userId = Model.UsersInfo.Id })" method="post">
+    <form class="form-horizontal" action="@Url.Action("Game", "Home", new { userId = Model.User.Id })" method="post">
         <h1 class="text-center">New Hero</h1>
         <div class="form-group text-center">
             <div>
