@@ -7,8 +7,7 @@ namespace HeroGame.Models
 {
     public class InventoryModel
     {
-        public int Id { get; set; }
-        public int Coins { get; set; }
+        public int Id { get; set; }        
         public int HeroesId { get; set; }
     }
 }
