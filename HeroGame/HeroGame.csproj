@@ -162,6 +162,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Classes\ControllerMethods.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DAL\HeroDAL.cs" />
     <Compile Include="DAL\IHeroDAL.cs" />
     <Compile Include="DAL\IInventoryDAL.cs" />
@@ -220,7 +221,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\LoginRegister.cshtml" />
+    <Content Include="Views\User\LoginRegister.cshtml" />
     <Content Include="Views\Home\Game.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\AllUsers.cshtml" />

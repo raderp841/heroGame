@@ -28,11 +28,11 @@
                     @{if (Session["User"] != null)
                         {
                             <li>@Html.ActionLink("Game", "Game", "Home")</li>
-                            <li>@Html.ActionLink("Logout", "LoginRegister", "Home")</li>
+                            <li>@Html.ActionLink("Logout", "LoginRegister", "User")</li>
                         }
                         else
                         {
-                            <li>@Html.ActionLink("Login/Register", "LoginRegister", "Home")</li>
+                            <li>@Html.ActionLink("Login/Register", "LoginRegister", "User")</li>
                         }
                     }
 

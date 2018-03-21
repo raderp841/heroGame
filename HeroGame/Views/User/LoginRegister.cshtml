@@ -10,7 +10,7 @@
 
 @*registration for a new user *@
 <div id="register">
-    <form class="form-horizontal " action="@Url.Action("LoginRegister", "Home", new { logCode = 0 })" method="post">
+    <form class="form-horizontal " action="@Url.Action("LoginRegister", "User", new { logCode = 0 })" method="post">
         <h1 class="text-center">Register</h1>
 
         <div class="form-group text-center">
@@ -71,7 +71,7 @@
 @*Login for existing User*@
 
 <div id="login">
-    <form class="form-horizontal" action="@Url.Action("LoginRegister", "Home", new { logCode = 1 })" method="post">
+    <form class="form-horizontal" action="@Url.Action("LoginRegister", "User", new { logCode = 1 })" method="post">
         <h1 class="text-center">Login</h1>
         <div class="form-group text-center">
             <div class="">
