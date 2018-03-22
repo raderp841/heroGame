@@ -29,7 +29,13 @@ TopDownGame.Game.prototype = {
     //create player
     var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer')
     this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
+    this.player.frame = 0;
+    this.player.animations.add('right', [16, 17, 18], 10, false);
+    this.player.animations.add('up', [32, 33, 34], 10, false);
+    this.player.animations.add('down', [0, 1, 2], 10, false);
+    this.player.anchor.setTo(.5, .5);
     this.game.physics.arcade.enable(this.player);
+    this.isFlipped = false;
 
     //the camera will follow the player in the world
 
@@ -78,7 +84,10 @@ TopDownGame.Game.prototype = {
 
       //copy all properties to the sprite
       Object.keys(element.properties).forEach(function(key){
-        sprite[key] = element.properties[key];
+          sprite[key] = element.properties[key];
+          if (key == 'flame') {
+              console.log('key is working for enemy');
+          }
       });
   },
   update: function() {
@@ -93,20 +102,40 @@ TopDownGame.Game.prototype = {
 
     if(this.cursors.up.isDown) {
       if(this.player.body.velocity.y == 0)
-      this.player.body.velocity.y -= 50;
+          this.player.body.velocity.y -= 50;
+      this.player.animations.play('up');
     }
     else if(this.cursors.down.isDown) {
       if(this.player.body.velocity.y == 0)
-      this.player.body.velocity.y += 50;
+          this.player.body.velocity.y += 50;
+      this.player.animations.play('down');
     }
     else {
       this.player.body.velocity.y = 0;
     }
-    if(this.cursors.left.isDown) {
-      this.player.body.velocity.x -= 50;
+    if (this.cursors.left.isDown) {
+        if (this.isFlipped) {
+            this.player.body.velocity.x -= 50;
+            this.player.animations.play('right');
+        }
+        else {
+            this.player.scale.x *= -1;
+            this.player.body.velocity.x -= 50;
+            this.player.animations.play('right');
+            this.isFlipped = true;
+        }
     }
-    else if(this.cursors.right.isDown) {
-      this.player.body.velocity.x += 50;
+    else if (this.cursors.right.isDown) {
+        if (this.isFlipped) {
+            this.player.scale.x *= -1;
+            this.player.body.velocity.x += 50;
+            this.player.animations.play('right');
+            this.isFlipped = false;
+        }
+        else {
+            this.player.body.velocity.x += 50;
+            this.player.animations.play('right');
+        }
     }
   },
   collect: function(player, collectable) {
