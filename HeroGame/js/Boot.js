@@ -20,6 +20,24 @@ TopDownGame.Boot.prototype = {
     //have the game centered horizontally
     this.scale.pageAlignHorizontally = true;
     this.scale.pageAlignVertically = true;
+    this.scale.refresh();
+
+
+    //function to set the size of canvas to fit screen
+    function adjust() {
+        var divgame = document.getElementById("game");
+        divgame.style.width = window.innerWidth + "px";
+        divgame.style.height = window.innerHeight + "px";
+    }
+    
+        this.game.input.maxPointers = 1;
+        this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.game.scale.pageAlignHorizontally = true;
+        this.game.scale.pageAlignVertically = true;
+        this.game.scale.refresh();
+        adjust();
+     
+
 
     //physics system
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
