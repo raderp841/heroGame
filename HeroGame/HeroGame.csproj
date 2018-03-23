@@ -192,6 +192,7 @@
     <Content Include="js\HeroCreateJS.js" />
     <Content Include="js\LoginRegisterJS.js" />
     <Content Include="js\main.js" />
+    <Content Include="js\Over.js" />
     <Content Include="js\phaser.js" />
     <Content Include="js\phaser.min.js" />
     <Content Include="js\Preload.js" />
